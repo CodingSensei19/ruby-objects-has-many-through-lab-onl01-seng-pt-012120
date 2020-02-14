@@ -1,17 +1,23 @@
-class Doctor
-  attr_accessor :name, :appointments
+require 'pry'
 
+class Doctor
+  attr_accessor :name
+  @@all = []
   def initialize(name)
     @name = name
-    @appointments = []
+    @@all << self
   end
-
-  def add_appointment(appointment)
-    appointment.doctor = self
-    appointments << appointment
+  def self.all
+    @@all
   end
-
+  def appointments
+    #binding.pry
+    Appointment.all.select {|app| app.doctor == self}
+  end
+  def new_appointment(patient, date)
+    Appointment.new(date, patient, self)
+  end
   def patients
-    appointments.map { |a| a.patient }
+    appointments.map {|app| app.patient}
   end
 end
